@@ -2,14 +2,12 @@ package rage4
 
 import (
   "fmt"
-  // "net/url"
 )
 
-func (c *Client) CreateRegularDomain(Name string, Email string) (status Status, err error) {
+func (c *Client) DeleteRecord(RecordId int) (status Status, err error) {
 
   // create http request
-  parameters := fmt.Sprintf("name=%s&email=%s", Name, Email)
-  endpoint := fmt.Sprintf("/createregulardomain/?%s", parameters)
+  endpoint := fmt.Sprintf("/deleterecord/%d", RecordId)
   req, err := c.NewRequest(nil, "GET", endpoint)
   if err != nil {
     return Status{}, err
@@ -33,13 +31,6 @@ func (c *Client) CreateRegularDomain(Name string, Email string) (status Status, 
   
   return status, nil
 }
-
-type Status struct {
-  Status      bool      `json:"status"`
-  Id          int       `json:"id"`
-  Error       string    `json:"error"`
-}
-
 
 
 

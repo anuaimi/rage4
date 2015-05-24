@@ -2,14 +2,18 @@ package rage4
 
 import (
   "fmt"
-  // "net/url"
+  "net/url"
 )
 
-func (c *Client) CreateRegularDomain(Name string, Email string) (status Status, err error) {
+// NOTE: NOT YET WORKING!
+
+func (c *Client) UpdateDomain(DomainId int, Email string) (status Status, err error) {
 
   // create http request
-  parameters := fmt.Sprintf("name=%s&email=%s", Name, Email)
-  endpoint := fmt.Sprintf("/createregulardomain/?%s", parameters)
+  parameters := fmt.Sprintf("email=%s", Email)
+  parameters = url.QueryEscape( parameters)
+  endpoint := fmt.Sprintf("/updatedomain/%d?%s", DomainId, parameters)
+  fmt.Printf("%s\n",endpoint)
   req, err := c.NewRequest(nil, "GET", endpoint)
   if err != nil {
     return Status{}, err
@@ -32,12 +36,6 @@ func (c *Client) CreateRegularDomain(Name string, Email string) (status Status, 
   status = getStatusResponse
   
   return status, nil
-}
-
-type Status struct {
-  Status      bool      `json:"status"`
-  Id          int       `json:"id"`
-  Error       string    `json:"error"`
 }
 
 

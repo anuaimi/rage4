@@ -49,7 +49,7 @@ func decode(reader io.Reader, obj interface{}) error {
 type Domain struct {
   Id          int       `json:"id"`
   Name        string    `json:"name"`
-  OwnerEmail  string    `json:"owner_email"`
+  Email       string    `json:"owner_email"`
   Type        int       `json:"type"`
   SubnetMask  int       `json:"subnet_mask"`
   DefaultNS1  string    `json:"default_ns1"`

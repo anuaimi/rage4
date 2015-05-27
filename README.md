@@ -20,3 +20,5 @@ Example usage:
 ```
   
 Note, while the code should work with Go 1.3, it is tested with Go 1.4
+
+![Travis CI status](https://travis-ci.org/anuaimi/rage4.svg)

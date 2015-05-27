@@ -19,3 +19,4 @@ Example usage:
   domains, err := client.GetDomains()
 ```
   
+Note, while the code should work with Go 1.3, it is tested with Go 1.4

@@ -8,7 +8,7 @@ import (
 func (c *Client) GetDomains() ([]Domain, error) {
 
   // create http request
-  req, err := c.NewRequest(nil, "GET", "/getdomains")
+  req, err := c.NewRequest(nil, "GET", "getdomains")
   if err != nil {
     return nil, err
   }

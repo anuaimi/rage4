@@ -12,7 +12,7 @@ func (c *Client) UpdateRecord( recordId int, record Record) (status Status, err 
   // create http request
   parameters := fmt.Sprintf("email=%s", record)
 
-  endpoint := fmt.Sprintf("/updaterecord/%d?%s", recordId, parameters)
+  endpoint := fmt.Sprintf("updaterecord/%d?%s", recordId, parameters)
   fmt.Printf("%s\n",endpoint)
   req, err := c.NewRequest(nil, "GET", endpoint)
   if err != nil {

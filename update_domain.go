@@ -12,7 +12,7 @@ func (c *Client) UpdateDomain(DomainId int, Email string) (status Status, err er
   // create http request
   parameters := fmt.Sprintf("email=%s", Email)
   parameters = url.QueryEscape( parameters)
-  endpoint := fmt.Sprintf("/updatedomain/%d?%s", DomainId, parameters)
+  endpoint := fmt.Sprintf("updatedomain/%d?%s", DomainId, parameters)
   fmt.Printf("%s\n",endpoint)
   req, err := c.NewRequest(nil, "GET", endpoint)
   if err != nil {

@@ -7,7 +7,7 @@ import (
 func (c *Client) GetRecords( DomainId int) ([]Record, error) {
 
   // create http request
-  endpoint := fmt.Sprintf("/getrecords/%d", DomainId)
+  endpoint := fmt.Sprintf("getrecords/%d", DomainId)
   req, err := c.NewRequest(nil, "GET", endpoint)
   if err != nil {
     return nil, err

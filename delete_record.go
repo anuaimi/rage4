@@ -7,7 +7,7 @@ import (
 func (c *Client) DeleteRecord(RecordId int) (status Status, err error) {
 
   // create http request
-  endpoint := fmt.Sprintf("/deleterecord/%d", RecordId)
+  endpoint := fmt.Sprintf("deleterecord/%d", RecordId)
   req, err := c.NewRequest(nil, "GET", endpoint)
   if err != nil {
     return Status{}, err

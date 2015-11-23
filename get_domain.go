@@ -7,7 +7,7 @@ import (
 func (c *Client) GetDomain(DomainId int) (domain Domain, err error) {
 
   // create http request
-  endpoint := fmt.Sprintf("/getdomain/%d", DomainId)
+  endpoint := fmt.Sprintf("getdomain/%d", DomainId)
   req, err := c.NewRequest(nil, "GET", endpoint)
   if err != nil {
     return Domain{}, err

@@ -13,17 +13,18 @@ import (
 type Client struct {
   Email string
   AccountKey string
-  URL string
+  Url url.URL
   Http *http.Client
 }
 
 func NewClient( email string, accountKey string) (*Client, error) {
 
   // create client object to use for requests
+  rage4ApiUrl, _ :=  url.Parse("https://secure.rage4.com/rapi/")
   client := Client{
     AccountKey: accountKey,
     Email: email,
-    URL:   "https://secure.rage4.com/rapi/",
+    Url: *rage4ApiUrl,
     Http:  http.DefaultClient,
   }
 
@@ -32,11 +33,11 @@ func NewClient( email string, accountKey string) (*Client, error) {
 
 func (c *Client) NewRequest( body map[string]interface{}, method string, endpoint string) (*http.Request, error) {
 
-  u, err := url.Parse(c.URL + endpoint)
-  if err != nil {
-    return nil, fmt.Errorf("Error parsing base URL: %s", err)
-  }
+  u := c.Url
+  u.Path = u.Path + endpoint
 
+  // fmt.Println("url = ", u.String())
+  
   rBody, err := encodeBody(body)
   if err != nil {
     return nil, fmt.Errorf("Error encoding request body: %s", err)
@@ -48,6 +49,7 @@ func (c *Client) NewRequest( body map[string]interface{}, method string, endpoin
     return nil, fmt.Errorf("Error creating request: %s", err)
   }
 
+  
   // add auth details
   req.SetBasicAuth( c.Email, c.AccountKey)
 

@@ -2,9 +2,11 @@ package main
 
 import (
   "fmt"
-  "github.com/anuaimi/rage4"
   "net/http"
+  "net/url"
   "os"
+  "time"
+  "github.com/anuaimi/rage4"
   "github.com/spf13/viper"
 )
 
@@ -14,7 +16,9 @@ import (
 func main() {
 
   // get API values from config file
-  viper.SetConfigName("config")     // can be config.json, config.yaml
+  viper.SetConfigName("athir") 
+  // viper.SetConfigName("config")     // can be config.json, config.yaml
+
   viper.AddConfigPath("./")
   viper.SetDefault("URL", "https://secure.rage4.com/rapi/")
   viper.ReadInConfig()
@@ -29,12 +33,21 @@ func main() {
   }
 
   // create connection to Rage4
+  apiUrl, _ := url.Parse(viper.GetString("URL"))
   client := rage4.Client{
     AccountKey: viper.GetString("AccountKey"),
     Email: viper.GetString("Email"),
-    URL:  viper.GetString("URL") ,
+    Url:  *apiUrl,
     Http:  http.DefaultClient,
   }
+
+  // GetCurrentTime
+  fmt.Print("GetCurrentTime\n")
+  apiTime, _ := client.GetCurrentTime()
+  serverTime, _ := time.Parse(time.RFC3339Nano, apiTime.UtcTime)
+
+  fmt.Printf("  time: %s  version: %s\n", serverTime, apiTime.Version)
+
 
   // GetDomains
   fmt.Print("GetDomains\n")

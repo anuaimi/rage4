@@ -8,7 +8,7 @@ func (c *Client) SetRecordFailover( recordId int, failover bool) (status Status,
 
   // create http request
   parameters := fmt.Sprintf("/%d?active=%t", recordId, failover)
-  endpoint := fmt.Sprintf("/setrecordfailover/%d?%s", recordId, parameters)
+  endpoint := fmt.Sprintf("setrecordfailover/%d?%s", recordId, parameters)
  
   req, err := c.NewRequest(nil, "GET", endpoint)
   if err != nil {

@@ -24,7 +24,7 @@ func (c *Client) CreateRecord(domainId int, record Record) (status Status, err e
 
   // create http request
   parameters := fmt.Sprintf("%d?name=%s&content=%s", domainId, record.Name, record.Content)
-  endpoint := fmt.Sprintf("/createrecord/%s", parameters)
+  endpoint := fmt.Sprintf("createrecord/%s", parameters)
   req, err := c.NewRequest(nil, "GET", endpoint)
   if err != nil {
     return Status{}, err

@@ -21,4 +21,5 @@ Example usage:
   
 Note, while the code should work with Go 1.3, it is tested with Go 1.4
 
-![Travis CI status](https://travis-ci.org/anuaimi/rage4.svg)
+[![GoDoc](https://godoc.org/github.com/anuaimi/rage4?status.png)](https://godoc.org/github.com/anuaimi/rage4)
+[![Build Status](https://travis-ci.org/anuaimi/rage4.svg)](https://travis-ci.org/anuaimi/rage4)

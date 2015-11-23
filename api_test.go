@@ -1,10 +1,13 @@
 package rage4
 
 import (
+  "encoding/json"
   "fmt"
   "os"
   "testing"
   "net/http"
+  "net/url"
+  "time"
   "github.com/spf13/viper"
 )
 
@@ -15,6 +18,8 @@ func TestMain(m *testing.M) {
   // setup mock rage4 api server()
   go serverWebPages()
 
+  time.Sleep(100 * time.Millisecond)
+
   // get settings for rage4
   viper.SetConfigName("testing")     // can be testing.json, testing.yaml
   viper.AddConfigPath("./example")
@@ -22,14 +27,15 @@ func TestMain(m *testing.M) {
 
   accountKey := viper.GetString("AccountKey")
   email := viper.GetString("Email")
-  url :=  viper.GetString("URL") 
-  fmt.Printf("testing rage4 api at %s using account %s\n", url, accountKey)
+  apiUrl, _ :=  url.Parse(viper.GetString("URL"))
+  apiUrl.Path = "rapi/"
+  fmt.Printf("testing rage4 api at %s using account %s\n", apiUrl, accountKey)
 
   // create client to test API calls
   client = Client{
     AccountKey: accountKey,
     Email: email,
-    URL: url,
+    Url: *apiUrl,
     Http:  http.DefaultClient,
   }
 
@@ -38,9 +44,6 @@ func TestMain(m *testing.M) {
   }
 
   retCode := m.Run()
-  fmt.Printf("result = %d", retCode)
-
-  // teardown()
 
   os.Exit(retCode)
 }
@@ -50,24 +53,25 @@ func serverWebPages() {
   // create web server - port 9000
   http.HandleFunc("/testAuth", testAuthHandler)
 
-  baseURL := "rapi"
-  http.HandleFunc( baseURL + "/getdomains", getDomainsHandler)
-  http.HandleFunc( baseURL + "/getdomain", getDomainHandler)
-  http.HandleFunc( baseURL + "/getdomainbyname", getDomainsHandler)
-  http.HandleFunc( baseURL + "/createregulardomain", createRegularDomainHandler)
-  http.HandleFunc( baseURL + "/createregulardomainext", createRegularDomainExtHandler)
-  http.HandleFunc( baseURL + "/createreversedomain4", createReverseDomain4Handler)
-  http.HandleFunc( baseURL + "/createreversedomain6", createReverseDomain6Handler)
-  http.HandleFunc( baseURL + "/updatedomain", updateDomainHandler)
-  http.HandleFunc( baseURL + "/deletedomain", deleteDomainHandler)
-  http.HandleFunc( baseURL + "/showcurrentusage", showCurrentUsageHandler)
-  http.HandleFunc( baseURL + "/showcurrentglobalusage", showCurrentGlobalUsageHandler)
-  http.HandleFunc( baseURL + "/listrecordtypes", listRecordTypesHandler)
-  http.HandleFunc( baseURL + "/listgeoregions", listGeoRegionsHandler)
-  http.HandleFunc( baseURL + "/getrecords", getRecordsHandler)
-  http.HandleFunc( baseURL + "/createrecord", createRecordHandler)
-  http.HandleFunc( baseURL + "/updaterecord", updateRecordHandler)
-  http.HandleFunc( baseURL + "/deleterecord", deleteRecordHandler)
+  baseURL := "/rapi/"
+  http.HandleFunc( baseURL + "index", getCurrentTimeHandler)
+  http.HandleFunc( baseURL + "getdomains", getDomainsHandler)
+  http.HandleFunc( baseURL + "getdomain", getDomainHandler)
+  http.HandleFunc( baseURL + "getdomainbyname", getDomainsHandler)
+  http.HandleFunc( baseURL + "createregulardomain", createRegularDomainHandler)
+  http.HandleFunc( baseURL + "createregulardomainext", createRegularDomainExtHandler)
+  http.HandleFunc( baseURL + "createreversedomain4", createReverseDomain4Handler)
+  http.HandleFunc( baseURL + "createreversedomain6", createReverseDomain6Handler)
+  http.HandleFunc( baseURL + "updatedomain", updateDomainHandler)
+  http.HandleFunc( baseURL + "deletedomain", deleteDomainHandler)
+  http.HandleFunc( baseURL + "showcurrentusage", showCurrentUsageHandler)
+  http.HandleFunc( baseURL + "showcurrentglobalusage", showCurrentGlobalUsageHandler)
+  http.HandleFunc( baseURL + "listrecordtypes", listRecordTypesHandler)
+  http.HandleFunc( baseURL + "listgeoregions", listGeoRegionsHandler)
+  http.HandleFunc( baseURL + "getrecords", getRecordsHandler)
+  http.HandleFunc( baseURL + "createrecord", createRecordHandler)
+  http.HandleFunc( baseURL + "updaterecord", updateRecordHandler)
+  http.HandleFunc( baseURL + "deleterecord", deleteRecordHandler)
 
   http.ListenAndServe(":9000", nil)
 
@@ -79,9 +83,24 @@ func testAuthHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 
+func getCurrentTimeHandler(w http.ResponseWriter, r *http.Request) {
+  // return sample time
+  serverTime := ApiTime{ UtcTime: "2015-11-23T04:38:04.7781411Z", Version: "5.7.5785.25371"}
+  js, err := json.Marshal(serverTime)
+  if err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return
+  }
+
+  w.Write( js)
+}
+
 func getDomainsHandler(w http.ResponseWriter, r *http.Request) {
-  // no input required
-  // return array of domain info
+  // return domain list
+  response := `[{"id":1,"name":"domain.com","owner_email":"owner@rage4.com","type":0,"subnet_mask":0,"default_ns1":"ns1.r4ns.com","default_ns2":"ns2.r4ns.com"}`
+  fmt.Println(response)
+
+  w.Write( []byte(response))
 }
 
 func getDomainHandler(w http.ResponseWriter, r *http.Request) {
@@ -158,11 +177,5 @@ func TestAuthentication(t *testing.T) {
   //make sure username & password passed in and 
 }
 
-func TestGetDomains(t *testing.T) {
-
-  fmt.Print("testing getdomains")
-  // domains, err := client.GetDomains()
-  client.GetDomains()
-
-}
-
+// test with no auth header
+// test with an auth header

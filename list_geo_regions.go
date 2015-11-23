@@ -6,7 +6,7 @@ import (
 func (c *Client) ListGeoRegions() ([]Region, error) {
 
   // create http request
-  req, err := c.NewRequest(nil, "GET", "/listgeoregions")
+  req, err := c.NewRequest(nil, "GET", "listgeoregions")
   if err != nil {
     return nil, err
   }

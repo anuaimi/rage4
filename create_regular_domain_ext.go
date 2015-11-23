@@ -17,7 +17,7 @@ func (c *Client) CreateRegularDomainExt(Name string, Email string) (status Statu
 
   // create http request
   parameters := fmt.Sprintf("name=%s&email=%s", Name, Email)
-  endpoint := fmt.Sprintf("/createregulardomainext/?%s", parameters)
+  endpoint := fmt.Sprintf("createregulardomainext/?%s", parameters)
   req, err := c.NewRequest(nil, "GET", endpoint)
   if err != nil {
     return Status{}, err

@@ -9,7 +9,7 @@ func (c *Client) CreateRegularDomain(Name string, Email string) (status Status, 
 
   // create http request
   parameters := fmt.Sprintf("name=%s&email=%s", Name, Email)
-  endpoint := fmt.Sprintf("/createregulardomain/?%s", parameters)
+  endpoint := fmt.Sprintf("createregulardomain/?%s", parameters)
   req, err := c.NewRequest(nil, "GET", endpoint)
   if err != nil {
     return Status{}, err

@@ -7,7 +7,7 @@ import (
 func (c *Client) ShowCurrentUsage( DomainId int) (usage []DailyUsage, err error) {
 
   // create http request
-  endpoint := fmt.Sprintf("/showcurrentusage/%d", DomainId)
+  endpoint := fmt.Sprintf("showcurrentusage/%d", DomainId)
   req, err := c.NewRequest(nil, "GET", endpoint)
   if err != nil {
     return []DailyUsage{}, err

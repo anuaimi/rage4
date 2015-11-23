@@ -97,10 +97,15 @@ func getCurrentTimeHandler(w http.ResponseWriter, r *http.Request) {
 
 func getDomainsHandler(w http.ResponseWriter, r *http.Request) {
   // return domain list
-  response := `[{"id":1,"name":"domain.com","owner_email":"owner@rage4.com","type":0,"subnet_mask":0,"default_ns1":"ns1.r4ns.com","default_ns2":"ns2.r4ns.com"}`
-  fmt.Println(response)
+  domains := []Domain{ {Id: 1, Name: "domain.com", Email: "owner@rage4.com", Type: 0,
+                      SubnetMask: 0, DefaultNS1: "ns1.r4ns.com", DefaultNS2: "ns2.r4ns.com"}}
+  js, err := json.Marshal(domains)
+  if err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return
+  }
 
-  w.Write( []byte(response))
+  w.Write( js)
 }
 
 func getDomainHandler(w http.ResponseWriter, r *http.Request) {

@@ -61,16 +61,16 @@ func main() {
   // usage,  _ := client.ShowCurrentGlobalUsage()
   // fmt.Printf("  usage from %s: %d\n", usage.Date, usage.Value)
 
-  //ListRecordTypes
-  fmt.Print("\nListRecordTypes\n")
-  recordTypes, err := client.ListRecordTypes()
-  if (recordTypes == nil) {
-    fmt.Printf("error: %s", err)
-  } else {
-    for _, recordType := range recordTypes {
-      fmt.Printf("  %s: %d\n", recordType.Name, recordType.Value)
-    }
-  }
+  // //ListRecordTypes
+  // fmt.Print("\nListRecordTypes\n")
+  // recordTypes, err := client.ListRecordTypes()
+  // if (recordTypes == nil) {
+  //   fmt.Printf("error: %s", err)
+  // } else {
+  //   for _, recordType := range recordTypes {
+  //     fmt.Printf("  %s: %d\n", recordType.Name, recordType.Value)
+  //   }
+  // }
 
   // //ListGeoRegions
   // fmt.Print("\nListGeoRegions\n")
@@ -119,7 +119,7 @@ func main() {
   fmt.Print("\nUpdateDomain\n")
   status, err = client.UpdateDomain2( domainId, "admin@test.com", true, "ns1.blabla.com", "ns2.blabla.com")
   if (err == nil) {
-    fmt.Printf("  status: %t  id: %d  error: %s\n", status.Status, status.Id, status.Error)
+    fmt.Printf("  domain updated\n")
   } else {
     fmt.Printf("%s", err)
   }
@@ -150,35 +150,37 @@ func main() {
   // }
 
   // CreateRecord
+  var recordId int
   fmt.Print("\nCreateRecord\n")
   record := rage4.Record{ Name: "www.blabla.com", Content: "1.2.3.4", Type: "A", Priority: 1 }
   status, err = client.CreateRecord( domainId, record)
   if (err == nil) {
+    recordId = status.Id
     fmt.Printf("  status: %t  id: %d  error: %s\n", status.Status, status.Id, status.Error)
   } else {
     fmt.Printf("  status: %t  id: %d  error: %s\n", status.Status, status.Id, status.Error)
   }
 
-  os.Exit(1)
-
-  // recordId := 1231889
-
-  // //DeleteRecord
-  // fmt.Print("\nDeleteRecord\n")
-  // status,  err = client.DeleteRecord( recordId)
-  // if (err == nil) {
-  //   fmt.Printf("%", err)
-  // } else {
-  //   fmt.Printf("  status: %t  id: %d  error: %s\n", status.Status, status.Id, status.Error)
-  // }
+  //DeleteRecord
+  if (recordId > 0) {
+    fmt.Print("\nDeleteRecord\n")
+    status,  err = client.DeleteRecord( recordId)
+    if (err == nil) {
+      fmt.Println("  record deleted")
+    } else {
+      fmt.Printf("  status: %t  id: %d  error: %s\n", status.Status, status.Id, status.Error)
+    }    
+  }
 
   //DeleteDomain
   fmt.Print("\nDeleteDomain\n")
   status, err = client.DeleteDomain( domainId)
   if (err == nil) {
-    fmt.Printf("%s", err)
+    fmt.Println("  domain deleted")
   } else {
     fmt.Printf("  status: %t  id: %d  error: %s\n", status.Status, status.Id, status.Error)
   }
+
+  // done
 
 }

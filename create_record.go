@@ -1,35 +1,22 @@
 package rage4
 
 import (
-  "fmt"
-  // "net/url"
+  // "fmt"
+  "strconv"
 )
 
 func (c *Client) CreateRecord(domainId int, record Record) (status Status, err error) {
 
-
-//convert type to int
-// type=<record type [int]>
-// priority=<record priority [int, nullable]
-// ttl=<ttl [int]
-
-// active=<record online/offline [bool (true|false), nullable]
-// failover=<enable/disable failover [bool (true|false)]
-// failovercontent=<record failover value [string]>
-// geozone=<geo region id [long]
-// geolock=<geo lock coordinates bool (true|false)
-// geolat=<geo latitude [double, nullable]
-// geolong=<geo longitude [double, nullable]
-// udplimit=<enable/disable result set limit [bool (true|false)
-
   // create http request
-  endpoint := fmt.Sprintf("createrecord/%d", domainId)
   parameters := map[string]string{
+    "id" : strconv.Itoa(domainId),
     "name" : record.Name,
     "content" : record.Content,
+    "type" : record.Type,
+    "priority" : strconv.Itoa(record.Priority),
   }
 
-  req, err := c.NewRequest(nil, "GET", endpoint, parameters)
+  req, err := c.NewRequest(nil, "GET", "createrecord", parameters)
   if err != nil {
     return Status{}, err
   }

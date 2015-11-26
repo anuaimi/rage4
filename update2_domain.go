@@ -2,17 +2,20 @@ package rage4
 
 import (
   "fmt"
-  // "net/url"
+  "strconv"
 )
 
 // NOTE: NOT YET WORKING!
 
-func (c *Client) UpdateDomain(DomainId int, Email string) (status Status, err error) {
+func (c *Client) UpdateDomain2(DomainId int, Email string, ApiAccess bool, Ns1 string, Ns2 string) (status Status, err error) {
 
   // create http request
   endpoint := fmt.Sprintf("updatedomain/%d", DomainId)
   parameters := map[string]string {
     "email" : Email,
+    "apiaccess" : strconv.FormatBool(ApiAccess),
+    "ns1" : Ns1, 
+    "ns2" : Ns2,
   }
   req, err := c.NewRequest(nil, "GET", endpoint, parameters)
   if err != nil {

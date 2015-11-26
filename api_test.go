@@ -15,12 +15,12 @@ var client Client
 
 func TestMain(m *testing.M) {
 
-  // setup mock rage4 api server()
-  go serverWebPages()
 
   time.Sleep(100 * time.Millisecond)
 
   // get settings for rage4
+  viper.SetDefault("URL", "https://secure.rage4.com/rapi/")
+
   viper.SetConfigName("testing")     // can be testing.json, testing.yaml
   viper.AddConfigPath("./example")
   viper.ReadInConfig()
@@ -28,7 +28,16 @@ func TestMain(m *testing.M) {
   accountKey := viper.GetString("AccountKey")
   email := viper.GetString("Email")
   apiUrl, _ :=  url.Parse(viper.GetString("URL"))
-  apiUrl.Path = "rapi/"
+
+  // if URL supplied, assume was to test with mocks
+  if (accountKey == "use_mocks") {
+    apiUrl, _ = url.Parse("http://localhost:9000/rapi/")
+
+    // setup mock rage4 api server()
+    go serverWebPages()
+  }
+  // otherwise use real API 
+
   fmt.Printf("testing rage4 api at %s using account %s\n", apiUrl, accountKey)
 
   // create client to test API calls
@@ -79,6 +88,7 @@ func serverWebPages() {
 
 func testAuthHandler(w http.ResponseWriter, r *http.Request) {
   // test run completed
+  client.GetCurrentTime()
   os.Exit(0)
 }
 
@@ -176,11 +186,3 @@ func deleteRecordHandler(w http.ResponseWriter, r *http.Request) {
   // return array of domain info
 }
 
-/////////////
-
-func TestAuthentication(t *testing.T) {
-  //make sure username & password passed in and 
-}
-
-// test with no auth header
-// test with an auth header

@@ -9,7 +9,7 @@ import (
 func (c *Client) GetCurrentTime() (ApiTime, error) {
 
   // create http request
-  req, err := c.NewRequest(nil, "GET", "index")
+  req, err := c.NewRequest(nil, "GET", "index", nil)
   if err != nil {
     return ApiTime{}, err
   }

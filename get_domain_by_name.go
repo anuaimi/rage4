@@ -1,14 +1,16 @@
 package rage4
 
 import (
-  "fmt"
+  // "fmt"
 )
 
 func (c *Client) GetDomainByName(Name string) (domain Domain, err error) {
 
   // create http request
-  endpoint := fmt.Sprintf("getdomainbyname/?name=%s", Name)
-  req, err := c.NewRequest(nil, "GET", endpoint)
+  parameters := map[string]string {
+    "name" : Name,
+  }
+  req, err := c.NewRequest(nil, "GET", "getdomainbyname", parameters)
   if err != nil {
     return Domain{}, err
   }

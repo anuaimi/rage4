@@ -1,7 +1,7 @@
 package rage4
 
 import (
-  "fmt"
+  // "fmt"
   // "net/url"
 )
 
@@ -16,9 +16,11 @@ func (c *Client) CreateRegularDomainExt(Name string, Email string) (status Statu
 
 
   // create http request
-  parameters := fmt.Sprintf("name=%s&email=%s", Name, Email)
-  endpoint := fmt.Sprintf("createregulardomainext/?%s", parameters)
-  req, err := c.NewRequest(nil, "GET", endpoint)
+  parameters := map[string]string {
+    "name" : Name,
+    "email" : Email,
+  }
+  req, err := c.NewRequest(nil, "GET", "createregulardomainext", parameters)
   if err != nil {
     return Status{}, err
   }

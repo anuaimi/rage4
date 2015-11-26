@@ -8,9 +8,13 @@ import (
 func (c *Client) CreateRegularDomain(Name string, Email string) (status Status, err error) {
 
   // create http request
-  parameters := fmt.Sprintf("name=%s&email=%s", Name, Email)
-  endpoint := fmt.Sprintf("createregulardomain/?%s", parameters)
-  req, err := c.NewRequest(nil, "GET", endpoint)
+  parameters := map[string]string{
+    "name" : Name,
+    "email" : Email,
+  }
+
+//add ability to pass parameters as map
+  req, err := c.NewRequest(nil, "GET", "createregulardomain", parameters)
   if err != nil {
     return Status{}, err
   }
@@ -24,8 +28,10 @@ func (c *Client) CreateRegularDomain(Name string, Email string) (status Status, 
 
   // parse the response
   getStatusResponse := Status{}
+
   err = decode(resp.Body, &getStatusResponse)
   if err != nil {
+    fmt.Println("decode failed:", err)
     return Status{}, err
   }
 

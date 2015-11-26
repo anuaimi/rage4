@@ -2,7 +2,7 @@ package rage4
 
 import (
   "fmt"
-  "net/url"
+  // "net/url"
 )
 
 // NOTE: NOT YET WORKING!
@@ -10,11 +10,11 @@ import (
 func (c *Client) UpdateDomain(DomainId int, Email string) (status Status, err error) {
 
   // create http request
-  parameters := fmt.Sprintf("email=%s", Email)
-  parameters = url.QueryEscape( parameters)
-  endpoint := fmt.Sprintf("updatedomain/%d?%s", DomainId, parameters)
-  fmt.Printf("%s\n",endpoint)
-  req, err := c.NewRequest(nil, "GET", endpoint)
+  endpoint := fmt.Sprintf("updatedomain/%d", DomainId)
+  parameters := map[string]string {
+    "email" : Email,
+  }
+  req, err := c.NewRequest(nil, "GET", endpoint, parameters)
   if err != nil {
     return Status{}, err
   }

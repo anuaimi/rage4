@@ -23,9 +23,13 @@ func (c *Client) CreateRecord(domainId int, record Record) (status Status, err e
 // udplimit=<enable/disable result set limit [bool (true|false)
 
   // create http request
-  parameters := fmt.Sprintf("%d?name=%s&content=%s", domainId, record.Name, record.Content)
-  endpoint := fmt.Sprintf("createrecord/%s", parameters)
-  req, err := c.NewRequest(nil, "GET", endpoint)
+  endpoint := fmt.Sprintf("createrecord/%d", domainId)
+  parameters := map[string]string{
+    "name" : record.Name,
+    "content" : record.Content,
+  }
+
+  req, err := c.NewRequest(nil, "GET", endpoint, parameters)
   if err != nil {
     return Status{}, err
   }

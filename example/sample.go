@@ -56,8 +56,6 @@ func main() {
     fmt.Printf("  %s (%d)\n", domain.Name, domain.Id)
   }
 
-  os.Exit(0)
-
   // //ShowCurrentGlobalUsage
   // fmt.Print("\nShowCurrentGlobalUsage\n")
   // usage,  _ := client.ShowCurrentGlobalUsage()
@@ -92,7 +90,7 @@ func main() {
   fmt.Print("\nCreateRegularDomain\n")
   status, err := client.CreateRegularDomain( domainName, "admin@blabla.com")
   if (status.Id == 0) {
-    fmt.Printf("%s\n", status.Error)
+    fmt.Printf("create regular domain failed: %s\n", status.Error)
     os.Exit(-1)
   } else {
     fmt.Printf("  status: %t  id: %d err:%s\n", status.Status, status.Id, status.Error)
@@ -110,40 +108,50 @@ func main() {
   domain, _ = client.GetDomainByName( domainName)
   fmt.Printf("  %s: %d\n", domainName, domain.Id)
 
-  //UpdateDomain
-  fmt.Print("\nUpdateDomain\n")
-  status, err = client.UpdateDomain( domainId, "admin2@test.com")
+  // //UpdateDomain
+  // fmt.Print("\nUpdateDomain\n")
+  // status, err = client.UpdateDomain( domainId, "admin2@test.com")
+  // if (err == nil) {
+  //   fmt.Printf("  status: %t  id: %d  error: %s\n", status.Status, status.Id, status.Error)
+  // } else {
+  //   fmt.Printf("%s", err)
+  // }
+
+  // //ShowCurrentUsage
+  // fmt.Print("\nShowCurrentUsage\n")
+  // fmt.Printf("  for: %d\n", domainId)
+  // domainUsage,  _ := client.ShowCurrentUsage( domainId)
+  // for _, dailyUsage := range domainUsage {
+  //   fmt.Printf("  from %s:  -  ", dailyUsage.Date)
+  //   fmt.Printf("  Total: %d", dailyUsage.Total)
+  //   fmt.Printf("  EU: %d", dailyUsage.EUTotal)
+  //   fmt.Printf("  US: %d", dailyUsage.USTotal)
+  //   fmt.Printf("  SA: %d", dailyUsage.SATotal)
+  //   fmt.Printf("  AP: %d", dailyUsage.APTotal)
+  //   fmt.Printf("  AF: %d\n", dailyUsage.AFTotal)
+  // }
+
+  // //GetRecords
+  // fmt.Print("\nGetRecords\n")
+  // records, err := client.GetRecords( domainId)
+  // if (err != nil) {
+  //   fmt.Printf("%s", err)
+  // } else {
+  //   for _, record := range records {
+  //     fmt.Printf("  %d: %s %s\n", record.Id, record.Type, record.Content)
+  //   }
+  // }
+
+  // CreateRecord
+  record := rage4.Record{ Name: "www", Content: "1.2.3.4", Type: "A", Priority: 1 }
+  status, err = client.CreateRecord( domainId, record)
   if (err == nil) {
+    fmt.Printf("%s", err)
+  } else {
     fmt.Printf("  status: %t  id: %d  error: %s\n", status.Status, status.Id, status.Error)
-  } else {
-    fmt.Printf("%s", err)
   }
 
-  //ShowCurrentUsage
-  fmt.Print("\nShowCurrentUsage\n")
-  fmt.Printf("  for: %d\n", domainId)
-  domainUsage,  _ := client.ShowCurrentUsage( domainId)
-  for _, dailyUsage := range domainUsage {
-    fmt.Printf("  from %s:  -  ", dailyUsage.Date)
-    fmt.Printf("  Total: %d", dailyUsage.Total)
-    fmt.Printf("  EU: %d", dailyUsage.EUTotal)
-    fmt.Printf("  US: %d", dailyUsage.USTotal)
-    fmt.Printf("  SA: %d", dailyUsage.SATotal)
-    fmt.Printf("  AP: %d", dailyUsage.APTotal)
-    fmt.Printf("  AF: %d\n", dailyUsage.AFTotal)
-  }
-
-
-  //GetRecords
-  fmt.Print("\nGetRecords\n")
-  records, err := client.GetRecords( domainId)
-  if (err != nil) {
-    fmt.Printf("%s", err)
-  } else {
-    for _, record := range records {
-      fmt.Printf("  %d: %s %s\n", record.Id, record.Type, record.Content)
-    }
-  }
+  os.Exit(1)
 
   // recordId := 1231889
 

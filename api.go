@@ -31,13 +31,19 @@ func NewClient( email string, accountKey string) (*Client, error) {
   return &client, nil
 }
 
-func (c *Client) NewRequest( body map[string]interface{}, method string, endpoint string) (*http.Request, error) {
+func (c *Client) NewRequest( body map[string]interface{}, method string, endpoint string, parameters map[string]string) (*http.Request, error) {
 
   u := c.Url
   u.Path = u.Path + endpoint
 
-  // fmt.Println("url = ", u.String())
-  
+  v := url.Values{}
+  for param,value := range parameters {
+    v.Set(param, value)
+  }
+  u.RawQuery = v.Encode()
+
+  fmt.Println("url = ", u.String())
+    
   rBody, err := encodeBody(body)
   if err != nil {
     return nil, fmt.Errorf("Error encoding request body: %s", err)

@@ -7,10 +7,16 @@ import (
 func (c *Client) SetRecordFailover( recordId int, failover bool) (status Status, err error) {
 
   // create http request
-  parameters := fmt.Sprintf("/%d?active=%t", recordId, failover)
-  endpoint := fmt.Sprintf("setrecordfailover/%d?%s", recordId, parameters)
+  endpoint := fmt.Sprintf("setrecordfailover/%d?", recordId)
+  setting := "true"
+  if failover == false {
+    setting = "false"
+  }
+  parameters := map[string]string {
+    "active" : setting,
+  }
  
-  req, err := c.NewRequest(nil, "GET", endpoint)
+  req, err := c.NewRequest(nil, "GET", endpoint, parameters)
   if err != nil {
     return Status{}, err
   }

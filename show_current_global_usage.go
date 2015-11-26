@@ -6,7 +6,7 @@ import (
 func (c *Client) ShowCurrentGlobalUsage() (usage GlobalUsage, err error) {
 
   // create http request
-  req, err := c.NewRequest(nil, "GET", "showcurrentglobalusage")
+  req, err := c.NewRequest(nil, "GET", "showcurrentglobalusage", nil)
   if err != nil {
     return GlobalUsage{}, err
   }

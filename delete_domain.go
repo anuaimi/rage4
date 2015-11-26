@@ -8,7 +8,7 @@ func (c *Client) DeleteDomain(DomainId int) (status Status, err error) {
 
   // create http request
   endpoint := fmt.Sprintf("deletedomain/%d", DomainId)
-  req, err := c.NewRequest(nil, "GET", endpoint)
+  req, err := c.NewRequest(nil, "GET", endpoint, nil)
   if err != nil {
     return Status{}, err
   }

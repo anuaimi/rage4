@@ -2,7 +2,7 @@ package rage4
 
 import (
   "fmt"
-  // "net/url"
+  "strconv"
 )
 
 // NOTE: NOT YET WORKING!
@@ -10,11 +10,25 @@ import (
 func (c *Client) UpdateRecord( recordId int, record Record) (status Status, err error) {
 
   // create http request
-  parameters := fmt.Sprintf("email=%s", record)
+  endpoint := fmt.Sprintf("updaterecord/%d", recordId)
+  idSetting := strconv.Itoa(record.Id)
+  activeSetting := strconv.FormatBool(record.IsActive)
+  prioritySetting := strconv.Itoa(record.Priority)
+  ttlSetting := strconv.Itoa(record.TTL)
+  geozoneSetting := strconv.Itoa(record.GeoRegionId)
+  
+  parameters := map[string]string {
+    "id" : idSetting,
+    "name" : record.Name,
+    "content" : record.Content,
+    "priority" : prioritySetting,
+    "active" : activeSetting,
+    "ttl" : ttlSetting,
+    "geozone" : geozoneSetting,
+  }
 
-  endpoint := fmt.Sprintf("updaterecord/%d?%s", recordId, parameters)
   fmt.Printf("%s\n",endpoint)
-  req, err := c.NewRequest(nil, "GET", endpoint)
+  req, err := c.NewRequest(nil, "GET", endpoint, parameters)
   if err != nil {
     return Status{}, err
   }

@@ -6,7 +6,7 @@ import (
 func (c *Client) ListRecordTypes() ([]RecordType, error) {
 
   // create http request
-  req, err := c.NewRequest(nil, "GET", "listrecordtypes")
+  req, err := c.NewRequest(nil, "GET", "listrecordtypes", nil)
   if err != nil {
     return nil, err
   }
